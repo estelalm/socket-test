@@ -5,20 +5,64 @@
     <title>Auction</title>
 </head>
 
-<body>
 
+<body>
     <h1>LOte 1</h1>
     <div id="auction">
         <h2>Valor atual: <span id="currentBid">0</span></h2>
     </div>
-    <form id="bidForm">
-        <input type="number" id="bidValue" name="value" placeholder="Enter your bid" required />
-        <input type="text" id="bidder" name="user" placeholder="Enter your name" required />
-        <button type="submit">Dar lance</button>
-        <script src="/socket.io/socket.io.js"></script>
-        <script>
-            const socket = io();
-        </script>
+    <input type="number" id="bidValue" name="value" placeholder="Enter your bid" required />
+    <input type="text" id="bidder" name="user" placeholder="Enter your name" required />
+    <button id="submit">Dar lance</button>
+    <script src="http://localhost:3000/socket.io/socket.io.js" defer></script>
+    <script type="module">
+
+
+
+        async function postLance(lance) {
+            const url = 'http://localhost:8080/v1/nolance/lance'
+            const options = {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(lance)
+            }
+            const response = await fetch(url, options)
+            console.log(response.json())
+            return response.ok
+        }
+         const getArrematanteAtual = async (id) => {
+
+            const url = `http://localhost:8080/v1/nolance/lance/arremate/lote/`+id
+            const response = await fetch(url)
+            const data = await response.json()
+            return data.lance[0]
+        }
+        
+
+        const valor = document.getElementById('bidValue')
+        const submit = document.getElementById('submit')
+        const atual = document.getElementById('currentBid')
+        const valorAtual = await getArrematanteAtual(1)
+        atual.textContent = `R$ ${valorAtual.valor.toFixed(2).replace('.', ',')}`
+        
+        submit.addEventListener('click', () => {
+
+            const date = new Date().toLocaleDateString().split('/').reverse().join('-');
+            
+            let lanceJSON = {
+                "data_lance": date,
+                "valor": Number(valor.value),
+                "lote": 1,
+                "usuario": 1
+            }
+
+            postLance(lanceJSON)
+
+        })
+
+    </script>
 </body>
 
 </html>
