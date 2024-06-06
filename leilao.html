@@ -43,9 +43,10 @@
 
         const valor = document.getElementById('bidValue')
         const submit = document.getElementById('submit')
-        const atual = document.getElementById('currentBid')
-        const valorAtual = await getArrematanteAtual(1)
-        atual.textContent = `R$ ${valorAtual.valor.toFixed(2).replace('.', ',')}`
+        const valorAtual = document.getElementById('currentBid')
+        const atual = await getArrematanteAtual(1)
+        valor.min = atual.valor + 1
+        valorAtual.textContent = `R$ ${atual.valor.toFixed(2).replace('.', ',')}`
         
         submit.addEventListener('click', () => {
 
