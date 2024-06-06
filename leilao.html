@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Auction</title>
+</head>
+
+<body>
+
+    <h1>LOte 1</h1>
+    <div id="auction">
+        <h2>Valor atual: <span id="currentBid">0</span></h2>
+    </div>
+    <form id="bidForm">
+        <input type="number" id="bidValue" name="value" placeholder="Enter your bid" required />
+        <input type="text" id="bidder" name="user" placeholder="Enter your name" required />
+        <button type="submit">Dar lance</button>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            const socket = io();
+        </script>
+</body>
+
+</html>
